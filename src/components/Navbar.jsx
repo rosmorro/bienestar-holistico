@@ -1,19 +1,20 @@
 function Navbar() {
   return (
     <header className="navbar">
-      <a href="#" className="brand">
+      <a href="#inicio" className="brand">
         <span className="brand-icon">♡</span>
 
-        <span>
-          Bienestar Holístico
-          <small>365 Días de Sanación Sistémica</small>
+        <span className="brand-text">
+          <strong>Bienestar Holístico</strong>
+          <small>Sanando desde las raíces, elevando las alas</small>
         </span>
       </a>
 
       <nav className="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#ofrecemos">Qué ofrecemos</a>
         <a href="#libros">Libros</a>
-        <a href="#muestras-gratis">Muestras gratis</a>
-        <a href="#proyectos">Proyectos</a>
+        <a href="#muestras-gratis">Recursos gratis</a>
         <a href="#contacto">Contacto</a>
       </nav>
 

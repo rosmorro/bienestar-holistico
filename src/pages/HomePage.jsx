@@ -1,8 +1,9 @@
 import Navbar from "../components/Navbar";
 
-import portadaLibro1 from "../assets/Images/portadalibro1.png";
-import portadaLibro2 from "../assets/Images/portadalibro2.png";
-import portadaLibro3 from "../assets/Images/portadalibro3.png";
+import portadaLibro1 from "../assets/images/portadalibro1.png";
+import portadaLibro2 from "../assets/images/portadalibro2.png";
+import portadaLibro3 from "../assets/images/portadalibro3.png";
+import heroBienestar from "../assets/images/hero-bienestar.png";
 
 const whatsappNumber = "50689327806";
 
@@ -12,7 +13,7 @@ const books = [
     title: "Donde Todo Comienza",
     subtitle: "Sanando desde las raíces, elevando las alas.",
     description:
-      "Este primer libro te invita a mirar tu historia personal y familiar con mayor conciencia. A través de ejercicios sistémicos y reflexiones guiadas, podrás reconocer tus raíces, comprender patrones y comenzar un proceso de transformación desde el origen.",
+      "Una invitación a mirar tu historia personal y familiar, reconocer tus raíces y comprender los patrones que han influido en tu vida.",
     image: portadaLibro1,
     sample: "/muestras/Libro1.pdf",
   },
@@ -21,7 +22,7 @@ const books = [
     title: "Aprender a Sostenerte",
     subtitle: "Encontrando fuerza y apoyo interno.",
     description:
-      "Este libro acompaña el proceso de construir seguridad interior. Sus ejercicios están pensados para ayudarte a reconocer tus necesidades, fortalecer tu autoestima y desarrollar recursos emocionales para sostenerte con mayor confianza y amor propio.",
+      "Ejercicios para reconocer tus necesidades, fortalecer tus recursos emocionales y aprender a acompañarte con mayor amor y seguridad.",
     image: portadaLibro2,
     sample: "/muestras/Libro2.pdf",
   },
@@ -30,9 +31,42 @@ const books = [
     title: "Soltar lo que Cargas",
     subtitle: "Liberando culpas y cargas del pasado.",
     description:
-      "Una invitación a identificar responsabilidades, culpas y cargas emocionales que quizá has llevado por mucho tiempo. Este libro te acompaña a mirar lo que no te corresponde y comenzar a soltarlo con respeto, comprensión y conciencia.",
+      "Un recorrido para identificar responsabilidades y cargas emocionales que ya no necesitas seguir sosteniendo.",
     image: portadaLibro3,
     sample: "/muestras/Libro3.pdf",
+  },
+];
+
+const offerings = [
+  {
+    icon: "📖",
+    title: "Libros",
+    text: "Colecciones y ejercicios para acompañarte paso a paso en tu crecimiento personal.",
+  },
+  {
+    icon: "🎁",
+    title: "Recursos gratuitos",
+    text: "Muestras, ejercicios y herramientas prácticas que puedes comenzar a utilizar hoy.",
+  },
+  {
+    icon: "🌳",
+    title: "Bosque del Corazón",
+    text: "Actividades y recursos para acompañar el bienestar emocional de niños y familias.",
+  },
+  {
+    icon: "💜",
+    title: "Descubriendo Mi Interior",
+    text: "Herramientas para adolescentes que desean comprender y fortalecer su mundo emocional.",
+  },
+  {
+    icon: "✨",
+    title: "Constelaciones familiares",
+    text: "Una mirada sistémica para comprender vínculos, historias y patrones familiares.",
+  },
+  {
+    icon: "🤖",
+    title: "Orientación con Lumi",
+    text: "Nuestro asistente puede ayudarte a explorar los recursos disponibles y saber por dónde comenzar.",
   },
 ];
 
@@ -42,32 +76,101 @@ function HomePage() {
       <Navbar />
 
       <main>
-        <section className="hero">
-          <div>
-            <p className="eyebrow">
-              Bienestar Holístico · 365 Días de Sanación Sistémica
-            </p>
+        <section id="inicio" className="home-hero">
+          <div className="home-hero-content">
+            <p className="eyebrow">Bienestar Holístico · Rosa Mora</p>
 
             <h1>
-              Un ejercicio al día
-              <br />
-              puede transformar tu historia.
+              Un espacio para sanar, crecer y reconectar contigo.
             </h1>
 
-            <p className="hero-text">
-              Descubre una colección creada para acompañarte en un proceso de
-              autoconocimiento, sanación y crecimiento personal, a tu propio
-              ritmo y desde el corazón.
+            <p className="home-hero-intro">
+              Creo en el poder de comprender nuestra historia, soltar aquello
+              que ya no necesitamos y construir una vida con mayor paz,
+              conciencia y propósito.
+            </p>
+
+            <p className="home-hero-about">
+              Soy <strong>Rosa Mora</strong>, autora y creadora de Bienestar
+              Holístico. Aquí encontrarás libros, ejercicios, recursos
+              emocionales y experiencias diseñadas para acompañarte en tu
+              camino de transformación personal y familiar.
             </p>
 
             <div className="hero-buttons">
-              <a href="#libros" className="btn primary">
-                Conocer los libros
+              <a href="#ofrecemos" className="btn primary">
+                Explorar el espacio
               </a>
 
-              <a href="#muestras-gratis" className="btn secondary">
-                Leer muestras gratuitas
+              <a href="#libros" className="btn secondary">
+                Conocer los libros
               </a>
+            </div>
+
+            <div className="hero-highlights">
+              <span>♡ Crecimiento personal</span>
+              <span>🌿 Bienestar emocional</span>
+              <span>✨ Sanación sistémica</span>
+            </div>
+          </div>
+
+          <div className="home-hero-visual">
+            <img
+              src={heroBienestar}
+              alt="Mujer disfrutando un momento de calma, lectura y conexión personal"
+            />
+
+            <div className="hero-quote">
+              <span>“</span>
+              Sanando desde las raíces, elevando las alas.
+            </div>
+          </div>
+        </section>
+
+        <section id="ofrecemos" className="offerings-section">
+          <div className="section-heading">
+            <p className="eyebrow">Un espacio creado para acompañarte</p>
+
+            <h2>Lo que encontrarás en Bienestar Holístico</h2>
+
+            <p>
+              Diferentes caminos y herramientas para cuidar tus emociones,
+              comprender tu historia y avanzar a tu propio ritmo.
+            </p>
+          </div>
+
+          <div className="offerings-grid">
+            {offerings.map((offering) => (
+              <article className="offering-card" key={offering.title}>
+                <span className="offering-icon">{offering.icon}</span>
+                <h3>{offering.title}</h3>
+                <p>{offering.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="purpose-section">
+          <div className="purpose-visual">
+            <div className="purpose-symbol">♡</div>
+          </div>
+
+          <div className="purpose-content">
+            <p className="eyebrow">Mi propósito</p>
+
+            <h2>Acompañarte a recordar tu valor y elegir una vida más consciente.</h2>
+
+            <p>
+              No se trata de convertirte en alguien diferente. Se trata de
+              comprenderte, escucharte y comenzar a soltar las cargas que te
+              impiden vivir con mayor libertad.
+            </p>
+
+            <div className="purpose-values">
+              <span>Transformación cotidiana</span>
+              <span>Conexión contigo</span>
+              <span>Herramientas prácticas</span>
+              <span>Acompañamiento con amor</span>
             </div>
           </div>
         </section>
@@ -79,9 +182,8 @@ function HomePage() {
             <h2>365 Días de Sanación Sistémica</h2>
 
             <p>
-              Tres libros para acompañarte en diferentes momentos de tu camino:
-              comprender tus raíces, aprender a sostenerte y soltar aquello que
-              ya no necesitas seguir cargando.
+              Tres libros para comprender tus raíces, aprender a sostenerte y
+              comenzar a soltar aquello que ya no necesitas cargar.
             </p>
           </div>
 
@@ -98,15 +200,12 @@ function HomePage() {
 
                 <div className="book-content">
                   <p className="book-number">Libro {book.id}</p>
-
                   <h3>{book.title}</h3>
-
                   <p className="book-subtitle">{book.subtitle}</p>
-
                   <p className="book-description">{book.description}</p>
 
                   <div className="book-price">
-                    <span>Precio</span>
+                    <span>Libro digital</span>
                     <strong>USD $5</strong>
                   </div>
 
@@ -139,14 +238,13 @@ function HomePage() {
 
         <section id="muestras-gratis" className="samples-section">
           <div className="section-heading">
-            <p className="eyebrow">Comienza gratuitamente</p>
+            <p className="eyebrow">Comienza sin costo</p>
 
             <h2>Lee los primeros 3 días de cada libro</h2>
 
             <p>
-              Conoce el enfoque de cada libro antes de comprarlo. Puedes abrir
-              gratuitamente los primeros tres días de cada uno, sin registro y
-              directamente desde tu navegador.
+              Explora gratuitamente el enfoque y la dinámica de cada libro
+              antes de decidir cuál puede acompañarte mejor.
             </p>
           </div>
 
@@ -161,9 +259,7 @@ function HomePage() {
 
                 <div className="sample-content">
                   <span className="free-badge">3 días gratis</span>
-
                   <h3>{book.title}</h3>
-
                   <p>{book.subtitle}</p>
 
                   <a
@@ -172,78 +268,33 @@ function HomePage() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Abrir muestra gratuita
+                    Abrir muestra
                   </a>
                 </div>
               </article>
             ))}
           </div>
-
-          <p className="samples-note">
-            Las muestras son gratuitas y sirven para que conozcas el estilo,
-            profundidad y dinámica de cada libro. El valor de cada libro
-            completo es de USD $5.
-          </p>
-        </section>
-
-        <section id="proyectos" className="projects-section">
-          <p className="eyebrow">También estamos creando</p>
-
-          <h2>Nuevos recursos para acompañarte</h2>
-
-          <div className="projects-grid">
-            <article className="project-card">
-              <span>🌳</span>
-              <h3>Bosque del Corazón</h3>
-              <p>
-                Libros y actividades para acompañar el desarrollo emocional de
-                niños y familias.
-              </p>
-            </article>
-
-            <article className="project-card">
-              <span>💜</span>
-              <h3>Descubriendo Mi Interior</h3>
-              <p>
-                Recursos para adolescentes que buscan comprender sus emociones
-                y fortalecer su mundo interior.
-              </p>
-            </article>
-
-            <article className="project-card">
-              <span>✨</span>
-              <h3>Recursos digitales</h3>
-              <p>
-                Nuevas guías, ejercicios y experiencias para acompañarte en tu
-                proceso de bienestar y crecimiento personal.
-              </p>
-            </article>
-          </div>
-
-          <p className="coming-message">
-            Muy pronto compartiremos nuevos contenidos, libros y recursos.
-          </p>
         </section>
 
         <section id="contacto" className="contact-section">
           <p className="eyebrow">Estamos para acompañarte</p>
 
-          <h2>¿No sabes con cuál libro comenzar?</h2>
+          <h2>¿No sabes por dónde comenzar?</h2>
 
           <p>
-            Escríbenos por WhatsApp y te ayudaremos a identificar cuál libro
-            puede acompañarte mejor en este momento de tu proceso.
+            Puedes conversar con Lumi, nuestro asistente, o escribirnos por
+            WhatsApp para conocer cuál recurso puede ser más adecuado para ti.
           </p>
 
           <a
             href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-              "Hola, quisiera orientación para saber con cuál libro comenzar."
+              "Hola, quisiera orientación para saber con cuál recurso comenzar."
             )}`}
             className="btn primary"
             target="_blank"
             rel="noreferrer"
           >
-            Recibir orientación
+            Escribir por WhatsApp
           </a>
         </section>
       </main>
