@@ -1,8 +1,8 @@
 import Navbar from "../components/Navbar";
 
-import portadaLibro1 from "../assets/images/portadalibro1.png";
-import portadaLibro2 from "../assets/images/portadalibro2.png";
-import portadaLibro3 from "../assets/images/portadalibro3.png";
+import portadaLibro1 from "../assets/Images/portadalibro1.png";
+import portadaLibro2 from "../assets/Images/portadalibro2.png";
+import portadaLibro3 from "../assets/Images/portadalibro3.png";
 
 const whatsappNumber = "50689327806";
 
