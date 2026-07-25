@@ -6,11 +6,13 @@ function Navbar() {
 
         <span>
           Bienestar Holístico
-          <small>Colores para el Corazón</small>
+          <small>365 Días de Sanación Sistémica</small>
         </span>
       </a>
 
       <nav className="nav-links">
+        <a href="#libros">Libros</a>
+        <a href="#muestras-gratis">Muestras gratis</a>
         <a href="#proyectos">Proyectos</a>
         <a href="#contacto">Contacto</a>
       </nav>
