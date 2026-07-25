@@ -81,7 +81,7 @@ function HomePage() {
             <p className="eyebrow">Bienestar Holístico · Rosa Mora</p>
 
             <h1>
-              Un espacio para sanar, crecer y reconectar contigo.
+              La transformación comienza cuando decides mirarte con amor.
             </h1>
 
             <p className="home-hero-intro">

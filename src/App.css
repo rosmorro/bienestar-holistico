@@ -233,15 +233,15 @@ img {
 }
 
 .home-hero-content h1 {
-  max-width: 650px;
-  margin: 18px 0 26px;
+  max-width: 620px;
+  margin: 18px 0 24px;
 
   color: var(--color-text);
   font-family: var(--font-title);
-  font-size: clamp(51px, 5.8vw, 78px);
+  font-size: clamp(40px, 4.8vw, 62px);
   font-weight: 700;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
 }
 
 .home-hero-intro,
@@ -252,13 +252,15 @@ img {
 }
 
 .home-hero-intro {
-  margin: 0 0 18px;
-  font-size: 19px;
+  margin: 0 0 22px;
+  font-size: 22px;
+  line-height: 1.7;
 }
 
 .home-hero-about {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
+  line-height: 1.9;
 }
 
 .home-hero-about strong {
