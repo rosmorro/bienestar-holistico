@@ -4,6 +4,7 @@ import portadaLibro1 from "../assets/Images/portadalibro1.png";
 import portadaLibro2 from "../assets/Images/portadalibro2.png";
 import portadaLibro3 from "../assets/Images/portadalibro3.png";
 import heroBienestar from "../assets/Images/hero-bienestar.png";
+import muestraGratisPersonajes from "../assets/Images/muestragratispersonajes.png";
 
 const whatsappNumber = "50689327806";
 
@@ -65,7 +66,7 @@ const offerings = [
   },
   {
     icon: "🤖",
-    title: "Orientación con Lumi",
+    title: "Orientación con Isis",
     text: "Nuestro asistente puede ayudarte a explorar los recursos disponibles y saber por dónde comenzar.",
   },
 ];
@@ -158,7 +159,9 @@ function HomePage() {
           <div className="purpose-content">
             <p className="eyebrow">Mi propósito</p>
 
-            <h2>Acompañarte a recordar tu valor y elegir una vida más consciente.</h2>
+            <h2>
+              Acompañarte a recordar tu valor y elegir una vida más consciente.
+            </h2>
 
             <p>
               No se trata de convertirte en alguien diferente. Se trata de
@@ -273,6 +276,71 @@ function HomePage() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section
+          id="bosque-del-corazon-gratis"
+          className="free-resource-section"
+        >
+          <div className="free-resource-card">
+            <div className="free-resource-content">
+              <p className="eyebrow">
+                Recurso gratuito para niños y familias
+              </p>
+
+              <span className="free-resource-badge">
+                Mini libro gratuito
+              </span>
+
+              <h2>Conoce a mis amigos del Bosque del Corazón</h2>
+
+              <p>
+                Descubre a los personajes del Bosque del Corazón y conoce cómo
+                cada uno acompaña a los niños a comprender y expresar sus
+                emociones.
+              </p>
+
+              <p>
+                Un recurso creado con amor para compartir en familia y comenzar
+                a conversar sobre el mundo emocional de una forma cercana,
+                creativa y sencilla.
+              </p>
+
+              <div className="free-resource-actions">
+                <a
+                  href="/muestras/ConoceMisAmigosBosquedelCorazon.pdf"
+                  className="btn primary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Leer mini libro gratis
+                </a>
+
+                <a
+                  href="/muestras/ConoceMisAmigosBosquedelCorazon.pdf"
+                  className="btn secondary"
+                  download
+                >
+                  Descargar PDF
+                </a>
+              </div>
+            </div>
+
+            <div className="free-resource-visual">
+              <a
+                href="/muestras/ConoceMisAmigosBosquedelCorazon.pdf"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Abrir el mini libro gratuito del Bosque del Corazón"
+              >
+                <img
+                  src={muestraGratisPersonajes}
+                  alt="Mini libro gratuito Conoce a mis amigos del Bosque del Corazón"
+                  className="free-resource-image"
+                />
+              </a>
+            </div>
           </div>
         </section>
 
