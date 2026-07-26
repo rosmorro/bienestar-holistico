@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 import portadaLibro1 from "../assets/Images/portadalibro1.png";
@@ -7,6 +8,9 @@ import heroBienestar from "../assets/Images/hero-bienestar.png";
 import muestraGratisPersonajes from "../assets/Images/muestragratispersonajes.png";
 
 const whatsappNumber = "50689327806";
+
+const freeBookUrl =
+  "/muestras/ConoceMisAmigosBosquedelCorazon.pdf";
 
 const books = [
   {
@@ -72,38 +76,136 @@ const offerings = [
 ];
 
 function HomePage() {
+  const [downloadCount, setDownloadCount] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  useEffect(() => {
+    const loadDownloadCount = async () => {
+      try {
+        const response = await fetch("/api/download-count");
+
+        if (!response.ok) {
+          throw new Error("No se pudo consultar el contador.");
+        }
+
+        const data = await response.json();
+
+        setDownloadCount(
+          typeof data.count === "number" ? data.count : 0
+        );
+      } catch (error) {
+        console.error(
+          "Error al consultar las descargas:",
+          error
+        );
+
+        setDownloadCount(null);
+      }
+    };
+
+    loadDownloadCount();
+  }, []);
+
+  const openIsis = () => {
+    if (window.botpress?.open) {
+      window.botpress.open();
+      return;
+    }
+
+    alert(
+      "Isis todavía se está cargando. Espera unos segundos y vuelve a intentarlo."
+    );
+  };
+
+  const handleFreeBookDownload = async () => {
+    if (isDownloading) {
+      return;
+    }
+
+    setIsDownloading(true);
+
+    try {
+      const response = await fetch("/api/download-count", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          "No se pudo actualizar el contador."
+        );
+      }
+
+      const data = await response.json();
+
+      setDownloadCount(
+        typeof data.count === "number"
+          ? data.count
+          : downloadCount
+      );
+    } catch (error) {
+      console.error(
+        "Error al registrar la descarga:",
+        error
+      );
+    } finally {
+      const link = document.createElement("a");
+
+      link.href = freeBookUrl;
+      link.download =
+        "ConoceMisAmigosBosquedelCorazon.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
 
       <main>
+        {/* HERO */}
+
         <section id="inicio" className="home-hero">
           <div className="home-hero-content">
-            <p className="eyebrow">Bienestar Holístico · Rosa Mora</p>
+            <p className="eyebrow">
+              Bienestar Holístico · Rosa Mora
+            </p>
 
             <h1>
-              La transformación comienza cuando decides mirarte con amor.
+              La transformación comienza cuando decides
+              mirarte con amor.
             </h1>
 
             <p className="home-hero-intro">
-              Creo en el poder de comprender nuestra historia, soltar aquello
-              que ya no necesitamos y construir una vida con mayor paz,
-              conciencia y propósito.
+              Creo en el poder de comprender nuestra historia,
+              soltar aquello que ya no necesitamos y construir
+              una vida con mayor paz, conciencia y propósito.
             </p>
 
             <p className="home-hero-about">
-              Soy <strong>Rosa Mora</strong>, autora y creadora de Bienestar
-              Holístico. Aquí encontrarás libros, ejercicios, recursos
-              emocionales y experiencias diseñadas para acompañarte en tu
-              camino de transformación personal y familiar.
+              Soy <strong>Rosa Mora</strong>, autora y creadora
+              de Bienestar Holístico. Aquí encontrarás libros,
+              ejercicios, recursos emocionales y experiencias
+              diseñadas para acompañarte en tu camino de
+              transformación personal y familiar.
             </p>
 
             <div className="hero-buttons">
-              <a href="#ofrecemos" className="btn primary">
+              <a
+                href="#ofrecemos"
+                className="btn primary"
+              >
                 Explorar el espacio
               </a>
 
-              <a href="#libros" className="btn secondary">
+              <a
+                href="#libros"
+                className="btn secondary"
+              >
                 Conocer los libros
               </a>
             </div>
@@ -128,28 +230,47 @@ function HomePage() {
           </div>
         </section>
 
-        <section id="ofrecemos" className="offerings-section">
-          <div className="section-heading">
-            <p className="eyebrow">Un espacio creado para acompañarte</p>
+        {/* LO QUE OFRECEMOS */}
 
-            <h2>Lo que encontrarás en Bienestar Holístico</h2>
+        <section
+          id="ofrecemos"
+          className="offerings-section"
+        >
+          <div className="section-heading">
+            <p className="eyebrow">
+              Un espacio creado para acompañarte
+            </p>
+
+            <h2>
+              Lo que encontrarás en Bienestar Holístico
+            </h2>
 
             <p>
-              Diferentes caminos y herramientas para cuidar tus emociones,
-              comprender tu historia y avanzar a tu propio ritmo.
+              Diferentes caminos y herramientas para cuidar
+              tus emociones, comprender tu historia y avanzar
+              a tu propio ritmo.
             </p>
           </div>
 
           <div className="offerings-grid">
             {offerings.map((offering) => (
-              <article className="offering-card" key={offering.title}>
-                <span className="offering-icon">{offering.icon}</span>
+              <article
+                className="offering-card"
+                key={offering.title}
+              >
+                <span className="offering-icon">
+                  {offering.icon}
+                </span>
+
                 <h3>{offering.title}</h3>
+
                 <p>{offering.text}</p>
               </article>
             ))}
           </div>
         </section>
+
+        {/* PROPÓSITO */}
 
         <section className="purpose-section">
           <div className="purpose-visual">
@@ -160,13 +281,15 @@ function HomePage() {
             <p className="eyebrow">Mi propósito</p>
 
             <h2>
-              Acompañarte a recordar tu valor y elegir una vida más consciente.
+              Acompañarte a recordar tu valor y elegir una
+              vida más consciente.
             </h2>
 
             <p>
-              No se trata de convertirte en alguien diferente. Se trata de
-              comprenderte, escucharte y comenzar a soltar las cargas que te
-              impiden vivir con mayor libertad.
+              No se trata de convertirte en alguien diferente.
+              Se trata de comprenderte, escucharte y comenzar
+              a soltar las cargas que te impiden vivir con
+              mayor libertad.
             </p>
 
             <div className="purpose-values">
@@ -178,21 +301,29 @@ function HomePage() {
           </div>
         </section>
 
+        {/* LIBROS */}
+
         <section id="libros" className="books-section">
           <div className="section-heading">
-            <p className="eyebrow">Colección disponible</p>
+            <p className="eyebrow">
+              Colección disponible
+            </p>
 
             <h2>365 Días de Sanación Sistémica</h2>
 
             <p>
-              Tres libros para comprender tus raíces, aprender a sostenerte y
-              comenzar a soltar aquello que ya no necesitas cargar.
+              Tres libros para comprender tus raíces,
+              aprender a sostenerte y comenzar a soltar
+              aquello que ya no necesitas cargar.
             </p>
           </div>
 
           <div className="books-grid">
             {books.map((book) => (
-              <article className="book-card" key={book.id}>
+              <article
+                className="book-card"
+                key={book.id}
+              >
                 <div className="book-cover-wrapper">
                   <img
                     src={book.image}
@@ -202,10 +333,19 @@ function HomePage() {
                 </div>
 
                 <div className="book-content">
-                  <p className="book-number">Libro {book.id}</p>
+                  <p className="book-number">
+                    Libro {book.id}
+                  </p>
+
                   <h3>{book.title}</h3>
-                  <p className="book-subtitle">{book.subtitle}</p>
-                  <p className="book-description">{book.description}</p>
+
+                  <p className="book-subtitle">
+                    {book.subtitle}
+                  </p>
+
+                  <p className="book-description">
+                    {book.description}
+                  </p>
 
                   <div className="book-price">
                     <span>Libro digital</span>
@@ -239,21 +379,34 @@ function HomePage() {
           </div>
         </section>
 
-        <section id="muestras-gratis" className="samples-section">
-          <div className="section-heading">
-            <p className="eyebrow">Comienza sin costo</p>
+        {/* MUESTRAS GRATUITAS */}
 
-            <h2>Lee los primeros 3 días de cada libro</h2>
+        <section
+          id="muestras-gratis"
+          className="samples-section"
+        >
+          <div className="section-heading">
+            <p className="eyebrow">
+              Comienza sin costo
+            </p>
+
+            <h2>
+              Lee los primeros 3 días de cada libro
+            </h2>
 
             <p>
-              Explora gratuitamente el enfoque y la dinámica de cada libro
-              antes de decidir cuál puede acompañarte mejor.
+              Explora gratuitamente el enfoque y la dinámica
+              de cada libro antes de decidir cuál puede
+              acompañarte mejor.
             </p>
           </div>
 
           <div className="samples-grid">
             {books.map((book) => (
-              <article className="sample-card" key={`sample-${book.id}`}>
+              <article
+                className="sample-card"
+                key={`sample-${book.id}`}
+              >
                 <img
                   src={book.image}
                   alt={`Muestra gratuita de ${book.title}`}
@@ -261,8 +414,12 @@ function HomePage() {
                 />
 
                 <div className="sample-content">
-                  <span className="free-badge">3 días gratis</span>
+                  <span className="free-badge">
+                    3 días gratis
+                  </span>
+
                   <h3>{book.title}</h3>
+
                   <p>{book.subtitle}</p>
 
                   <a
@@ -279,6 +436,8 @@ function HomePage() {
           </div>
         </section>
 
+        {/* MINI LIBRO GRATUITO */}
+
         <section
           id="bosque-del-corazon-gratis"
           className="free-resource-section"
@@ -293,23 +452,27 @@ function HomePage() {
                 Mini libro gratuito
               </span>
 
-              <h2>Conoce a mis amigos del Bosque del Corazón</h2>
+              <h2>
+                Conoce a mis amigos del Bosque del Corazón
+              </h2>
 
               <p>
-                Descubre a los personajes del Bosque del Corazón y conoce cómo
-                cada uno acompaña a los niños a comprender y expresar sus
+                Descubre a los personajes del Bosque del
+                Corazón y conoce cómo cada uno acompaña a
+                los niños a comprender y expresar sus
                 emociones.
               </p>
 
               <p>
-                Un recurso creado con amor para compartir en familia y comenzar
-                a conversar sobre el mundo emocional de una forma cercana,
+                Un recurso creado con amor para compartir
+                en familia y comenzar a conversar sobre el
+                mundo emocional de una forma cercana,
                 creativa y sencilla.
               </p>
 
               <div className="free-resource-actions">
                 <a
-                  href="/muestras/ConoceMisAmigosBosquedelCorazon.pdf"
+                  href={freeBookUrl}
                   className="btn primary"
                   target="_blank"
                   rel="noreferrer"
@@ -317,19 +480,66 @@ function HomePage() {
                   Leer mini libro gratis
                 </a>
 
-                <a
-                  href="/muestras/ConoceMisAmigosBosquedelCorazon.pdf"
+                <button
+                  type="button"
                   className="btn secondary"
-                  download
+                  onClick={handleFreeBookDownload}
+                  disabled={isDownloading}
                 >
-                  Descargar PDF
-                </a>
+                  {isDownloading
+                    ? "Preparando descarga..."
+                    : "Descargar PDF"}
+                </button>
+              </div>
+
+              <p
+                className="download-counter"
+                aria-live="polite"
+              >
+                📥{" "}
+                {downloadCount === null
+                  ? "Consultando descargas..."
+                  : `${downloadCount} ${
+                      downloadCount === 1
+                        ? "descarga"
+                        : "descargas"
+                    }`}
+              </p>
+
+              {/* TARJETA PARA ABRIR A ISIS */}
+
+              <div className="isis-recommendation">
+                <div className="isis-recommendation-content">
+                  <span className="isis-recommendation-icon">
+                    💜
+                  </span>
+
+                  <div>
+                    <strong>
+                      ¿No sabes por dónde empezar?
+                    </strong>
+
+                    <p>
+                      Cuéntale a Isis qué estás viviendo y
+                      ella te ayudará a encontrar el recurso
+                      más adecuado para comenzar.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="btn secondary"
+                  onClick={openIsis}
+                >
+                  Hablar con Isis
+                </button>
               </div>
             </div>
 
             <div className="free-resource-visual">
               <a
-                href="/muestras/ConoceMisAmigosBosquedelCorazon.pdf"
+                href={freeBookUrl}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Abrir el mini libro gratuito del Bosque del Corazón"
@@ -344,26 +554,44 @@ function HomePage() {
           </div>
         </section>
 
-        <section id="contacto" className="contact-section">
-          <p className="eyebrow">Estamos para acompañarte</p>
+        {/* CONTACTO */}
+
+        <section
+          id="contacto"
+          className="contact-section"
+        >
+          <p className="eyebrow">
+            Estamos para acompañarte
+          </p>
 
           <h2>¿No sabes por dónde comenzar?</h2>
 
           <p>
-            Puedes conversar con Lumi, nuestro asistente, o escribirnos por
-            WhatsApp para conocer cuál recurso puede ser más adecuado para ti.
+            Puedes conversar con Isis, nuestro asistente,
+            o escribirnos por WhatsApp para conocer cuál
+            recurso puede ser más adecuado para ti.
           </p>
 
-          <a
-            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-              "Hola, quisiera orientación para saber con cuál recurso comenzar."
-            )}`}
-            className="btn primary"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Escribir por WhatsApp
-          </a>
+          <div className="hero-buttons">
+            <button
+              type="button"
+              className="btn secondary"
+              onClick={openIsis}
+            >
+              Hablar con Isis
+            </button>
+
+            <a
+              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                "Hola, quisiera orientación para saber con cuál recurso comenzar."
+              )}`}
+              className="btn primary"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Escribir por WhatsApp
+            </a>
+          </div>
         </section>
       </main>
     </>
