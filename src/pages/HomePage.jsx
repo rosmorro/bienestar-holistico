@@ -82,8 +82,11 @@ const offerings = [
 
 function HomePage() {
   const [pageVisitCount, setPageVisitCount] = useState(null);
-  const [downloadCount, setDownloadCount] = useState(null);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadCounts, setDownloadCounts] = useState({
+    amigosBosque: null,
+    coloresPaz: null,
+  });
+  const [downloadingResource, setDownloadingResource] = useState(null);
   const [newsletterStatus, setNewsletterStatus] = useState("");
   const [isNewsletterSubmitting, setIsNewsletterSubmitting] =
     useState(false);
@@ -119,24 +122,44 @@ function HomePage() {
       }
     };
 
-    const loadDownloadCount = async () => {
+    const loadDownloadCounts = async () => {
+      const resources = ["amigosBosque", "coloresPaz"];
+
       try {
-        const response = await fetch("/api/download-count");
+        const results = await Promise.all(
+          resources.map(async (resourceId) => {
+            const response = await fetch(
+              `/api/download-count?resource=${encodeURIComponent(resourceId)}`
+            );
 
-        if (!response.ok) {
-          throw new Error("No se pudo consultar el contador.");
-        }
+            if (!response.ok) {
+              throw new Error(
+                `No se pudo consultar el contador de ${resourceId}.`
+              );
+            }
 
-        const data = await response.json();
-        setDownloadCount(typeof data.count === "number" ? data.count : 0);
+            const data = await response.json();
+
+            return [
+              resourceId,
+              typeof data.count === "number" ? data.count : 0,
+            ];
+          })
+        );
+
+        setDownloadCounts(Object.fromEntries(results));
       } catch (error) {
         console.error("Error al consultar las descargas:", error);
-        setDownloadCount(null);
+
+        setDownloadCounts({
+          amigosBosque: null,
+          coloresPaz: null,
+        });
       }
     };
 
     registerPageVisit();
-    loadDownloadCount();
+    loadDownloadCounts();
   }, []);
 
   const openIsis = () => {
@@ -150,17 +173,24 @@ function HomePage() {
     );
   };
 
-  const handleFreeResourceDownload = async (fileUrl, fileName) => {
-    if (isDownloading) {
+  const handleFreeResourceDownload = async (
+    resourceId,
+    fileUrl,
+    fileName
+  ) => {
+    if (downloadingResource) {
       return;
     }
 
-    setIsDownloading(true);
+    setDownloadingResource(resourceId);
 
     try {
-      const response = await fetch("/api/download-count", {
-        method: "POST",
-      });
+      const response = await fetch(
+        `/api/download-count?resource=${encodeURIComponent(resourceId)}`,
+        {
+          method: "POST",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("No se pudo actualizar el contador.");
@@ -168,9 +198,13 @@ function HomePage() {
 
       const data = await response.json();
 
-      setDownloadCount(
-        typeof data.count === "number" ? data.count : downloadCount
-      );
+      setDownloadCounts((currentCounts) => ({
+        ...currentCounts,
+        [resourceId]:
+          typeof data.count === "number"
+            ? data.count
+            : currentCounts[resourceId],
+      }));
     } catch (error) {
       console.error("Error al registrar la descarga:", error);
     } finally {
@@ -183,7 +217,7 @@ function HomePage() {
       link.click();
       link.remove();
 
-      setIsDownloading(false);
+      setDownloadingResource(null);
     }
   };
 
@@ -577,17 +611,31 @@ function HomePage() {
                   <button
                     type="button"
                     className="btn primary"
-                    disabled={isDownloading}
+                    disabled={downloadingResource === "amigosBosque"}
                     onClick={() =>
                       handleFreeResourceDownload(
+                        "amigosBosque",
                         freeFriendsBookUrl,
                         "ConoceMisAmigosBosquedelCorazon.pdf"
                       )
                     }
                   >
-                    Descargar gratis
+                    {downloadingResource === "amigosBosque"
+                      ? "Preparando descarga..."
+                      : "Descargar gratis"}
                   </button>
                 </div>
+
+                <p className="resource-download-counter" aria-live="polite">
+                  📥{" "}
+                  {downloadCounts.amigosBosque === null
+                    ? "Consultando descargas..."
+                    : `${downloadCounts.amigosBosque.toLocaleString("es-CR")} ${
+                        downloadCounts.amigosBosque === 1
+                          ? "descarga"
+                          : "descargas"
+                      }`}
+                </p>
               </div>
             </article>
 
@@ -631,33 +679,36 @@ function HomePage() {
                   <button
                     type="button"
                     className="btn primary"
-                    disabled={isDownloading}
+                    disabled={downloadingResource === "coloresPaz"}
                     onClick={() =>
                       handleFreeResourceDownload(
+                        "coloresPaz",
                         peaceColorsUrl,
                         "Colores_de_Paz_Interior.pdf"
                       )
                     }
                   >
-                    Descargar gratis
+                    {downloadingResource === "coloresPaz"
+                      ? "Preparando descarga..."
+                      : "Descargar gratis"}
                   </button>
                 </div>
+
+                <p className="resource-download-counter" aria-live="polite">
+                  📥{" "}
+                  {downloadCounts.coloresPaz === null
+                    ? "Consultando descargas..."
+                    : `${downloadCounts.coloresPaz.toLocaleString("es-CR")} ${
+                        downloadCounts.coloresPaz === 1
+                          ? "descarga"
+                          : "descargas"
+                      }`}
+                </p>
               </div>
             </article>
           </div>
 
-          <div className="resource-library-footer">
-            <p className="download-counter" aria-live="polite">
-              📥{" "}
-              {downloadCount === null
-                ? "Consultando descargas..."
-                : `${downloadCount} ${
-                    downloadCount === 1
-                      ? "recurso descargado"
-                      : "recursos descargados"
-                  }`}
-            </p>
-          </div>
+
         </section>
 
         <section id="comunidad-bienestar" className="community-section">

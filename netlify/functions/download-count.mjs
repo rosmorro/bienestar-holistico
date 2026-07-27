@@ -1,40 +1,57 @@
 import { getStore } from "@netlify/blobs";
 
 const STORE_NAME = "site-counters";
-const COUNTER_KEY = "bosque-del-corazon-downloads";
+
+const RESOURCE_KEYS = {
+  amigosBosque: "downloads-amigos-bosque",
+  coloresPaz: "downloads-colores-paz",
+};
+
+function getResourceId(request) {
+  const url = new URL(request.url);
+  return url.searchParams.get("resource");
+}
 
 export default async function handler(request) {
-  const store = getStore({
-    name: STORE_NAME,
-    consistency: "strong",
-  });
+  const resourceId = getResourceId(request);
+  const counterKey = RESOURCE_KEYS[resourceId];
+
+  if (!counterKey) {
+    return Response.json(
+      {
+        error: "Recurso no válido. Usa amigosBosque o coloresPaz.",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
+  const store = getStore(STORE_NAME);
 
   try {
+    const savedCount = await store.get(counterKey, {
+      type: "text",
+      consistency: "strong",
+    });
+
+    const parsedCount = Number.parseInt(savedCount ?? "0", 10);
+    const currentCount = Number.isNaN(parsedCount) ? 0 : parsedCount;
+
     if (request.method === "GET") {
-      const savedCount = await store.get(COUNTER_KEY, {
-        type: "text",
-        consistency: "strong",
-      });
-
-      const count = Number.parseInt(savedCount ?? "0", 10);
-
       return Response.json({
-        count: Number.isNaN(count) ? 0 : count,
+        resource: resourceId,
+        count: currentCount,
       });
     }
 
     if (request.method === "POST") {
-      const savedCount = await store.get(COUNTER_KEY, {
-        type: "text",
-        consistency: "strong",
-      });
+      const nextCount = currentCount + 1;
 
-      const currentCount = Number.parseInt(savedCount ?? "0", 10);
-      const nextCount = (Number.isNaN(currentCount) ? 0 : currentCount) + 1;
-
-      await store.set(COUNTER_KEY, String(nextCount));
+      await store.set(counterKey, String(nextCount));
 
       return Response.json({
+        resource: resourceId,
         count: nextCount,
       });
     }
@@ -51,11 +68,11 @@ export default async function handler(request) {
       }
     );
   } catch (error) {
-    console.error("Error al actualizar el contador:", error);
+    console.error("Error al manejar el contador de descargas:", error);
 
     return Response.json(
       {
-        error: "No se pudo consultar el contador.",
+        error: "No se pudo consultar el contador de descargas.",
       },
       {
         status: 500,
@@ -66,4 +83,5 @@ export default async function handler(request) {
 
 export const config = {
   path: "/api/download-count",
+  method: ["GET", "POST"],
 };
