@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import VisitCounter from "../components/VisitCounter";
 
+
 import portadaLibro1 from "../assets/Images/portadalibro1.png";
 import portadaLibro2 from "../assets/Images/portadalibro2.png";
 import portadaLibro3 from "../assets/Images/portadalibro3.png";
@@ -687,27 +688,34 @@ function HomePage() {
             Puedes conversar con Isis, nuestro asistente, o escribirnos por
             WhatsApp para conocer cuál recurso puede ser más adecuado para ti.
           </p>
+<div className="hero-buttons">
+  <a
+    href="#comunidad-bienestar"
+    className="btn primary"
+  >
+    Unirme a la comunidad
+  </a>
 
-          <div className="hero-buttons">
-            <button
-              type="button"
-              className="btn secondary"
-              onClick={openIsis}
-            >
-              Hablar con Isis
-            </button>
+  <button
+    type="button"
+    className="btn secondary"
+    onClick={openIsis}
+  >
+    Hablar con Isis
+  </button>
 
-            <a
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                "Hola, quisiera orientación para saber con cuál recurso comenzar."
-              )}`}
-              className="btn primary"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Escribir por WhatsApp
-            </a>
-          </div>
+  <a
+    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      "Hola, quisiera orientación para saber con cuál recurso comenzar."
+    )}`}
+    className="btn secondary"
+    target="_blank"
+    rel="noreferrer"
+  >
+    Escribir por WhatsApp
+  </a>
+</div>
+          
         </section>
       </main>
     </>

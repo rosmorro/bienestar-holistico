@@ -1458,3 +1458,6 @@ img {
     padding-right: 18px;
   }
 }
+.contact-section .hero-buttons {
+  justify-content: center;
+}

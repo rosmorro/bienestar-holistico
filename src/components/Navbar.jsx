@@ -11,12 +11,13 @@ function Navbar() {
       </a>
 
       <nav className="nav-links">
-        <a href="#inicio">Inicio</a>
-        <a href="#ofrecemos">Qué ofrecemos</a>
-        <a href="#libros">Libros</a>
-        <a href="#muestras-gratis">Recursos gratis</a>
-        <a href="#contacto">Contacto</a>
-      </nav>
+  <a href="#inicio">Inicio</a>
+  <a href="#ofrecemos">Qué ofrecemos</a>
+  <a href="#libros">Libros</a>
+  <a href="#muestras-gratis">Recursos gratis</a>
+  <a href="#comunidad-bienestar">Comunidad</a>
+  <a href="#contacto">Contacto</a>
+</nav>
 
       <a
         href="https://wa.me/50689327806"
