@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import VisitCounter from "../components/VisitCounter";
-
 
 import portadaLibro1 from "../assets/Images/portadalibro1.png";
 import portadaLibro2 from "../assets/Images/portadalibro2.png";
 import portadaLibro3 from "../assets/Images/portadalibro3.png";
 import heroBienestar from "../assets/Images/hero-bienestar.png";
-import muestraGratisPersonajes from "../assets/Images/muestragratispersonajes.png";
+import muestraGratisPersonajes from "../assets/Images/portada-conoce-amigos-bosque.png";
+import portadaColoresPaz from "../assets/Images/portada-colores-paz-interior.png";
+import portadaMiPrimerViaje from "../assets/Images/portada-mi-primer-viaje-bosque.png";
 
 const whatsappNumber = "50689327806";
-const freeBookUrl = "/muestras/ConoceMisAmigosBosquedelCorazon.pdf";
+
+const freeFriendsBookUrl =
+  "/muestras/ConoceMisAmigosBosquedelCorazon.pdf";
+
+const peaceColorsUrl =
+  "/muestras/Colores_de_Paz_Interior.pdf";
 
 const books = [
   {
@@ -145,7 +150,7 @@ function HomePage() {
     );
   };
 
-  const handleFreeBookDownload = async () => {
+  const handleFreeResourceDownload = async (fileUrl, fileName) => {
     if (isDownloading) {
       return;
     }
@@ -171,8 +176,8 @@ function HomePage() {
     } finally {
       const link = document.createElement("a");
 
-      link.href = freeBookUrl;
-      link.download = "ConoceMisAmigosBosquedelCorazon.pdf";
+      link.href = fileUrl;
+      link.download = fileName;
 
       document.body.appendChild(link);
       link.click();
@@ -266,7 +271,16 @@ function HomePage() {
               <span>✨ Sanación sistémica</span>
             </div>
 
-            <VisitCounter count={pageVisitCount} />
+            <p className="page-visit-counter" aria-live="polite">
+              👁️{" "}
+              {pageVisitCount === null
+                ? "Contando visitas..."
+                : `${pageVisitCount.toLocaleString("es-CR")} ${
+                    pageVisitCount === 1
+                      ? "visita registrada"
+                      : "visitas registradas"
+                  }`}
+            </p>
           </div>
 
           <div className="home-hero-visual">
@@ -425,102 +439,224 @@ function HomePage() {
           </div>
         </section>
 
-        <section
-          id="bosque-del-corazon-gratis"
-          className="free-resource-section"
-        >
-          <div className="free-resource-card">
-            <div className="free-resource-content">
-              <p className="eyebrow">
-                Recurso gratuito para niños y familias
-              </p>
+        <section id="bosque-del-corazon" className="bosque-book-section">
+          <div className="section-heading">
+            <p className="eyebrow">Colección infantil</p>
+            <h2>Mi Primer Viaje por el Bosque del Corazón</h2>
+            <p>
+              Un libro para colorear y realizar actividades que acompaña con
+              amor a niños de 5 a 10 años cuando extrañan a alguien, sienten
+              miedo o están viviendo un cambio importante.
+            </p>
+          </div>
 
-              <span className="free-resource-badge">
-                Mini libro gratuito
-              </span>
+          <article className="bosque-book-card">
+            <div className="bosque-book-cover-wrap">
+              <img
+                src={portadaMiPrimerViaje}
+                alt="Portada del libro Mi Primer Viaje por el Bosque del Corazón"
+                className="bosque-book-cover"
+              />
+              <span className="resource-status paid-status">USD $5</span>
+            </div>
 
-              <h2>Conoce a mis amigos del Bosque del Corazón</h2>
+            <div className="bosque-book-content">
+              <p className="resource-kicker">Libro 1 · De 5 a 10 años</p>
+              <h3>Un libro de amor para sentir, recordar y crecer</h3>
 
               <p>
-                Descubre a los personajes del Bosque del Corazón y conoce cómo
-                cada uno acompaña a los niños a comprender y expresar sus
-                emociones.
+                Hay emociones que los niños todavía no saben explicar. A veces
+                extrañan a alguien, sienten miedo o simplemente necesitan un
+                abrazo. Por eso nació el Bosque del Corazón.
               </p>
 
-              <p>
-                Un recurso creado con amor para compartir en familia y comenzar
-                a conversar sobre el mundo emocional de una forma cercana,
-                creativa y sencilla.
-              </p>
+              <ul className="resource-feature-list">
+                <li>40 páginas para colorear y realizar actividades.</li>
+                <li>Ejercicios de respiración y calma.</li>
+                <li>Espacios para escribir, dibujar y expresar emociones.</li>
+                <li>Isis y los amigos del Bosque acompañan cada paso.</li>
+                <li>Ideal para acompañar cambios, ausencias y momentos difíciles.</li>
+              </ul>
 
-              <div className="free-resource-actions">
+              <div className="resource-special-note">
+                <strong>Porque sanar también puede comenzar con un lápiz de colores.</strong>
+                Más adelante estará disponible una edición premium completamente a color.
+              </div>
+
+              <div className="resource-card-actions bosque-book-actions">
                 <a
-                  href={freeBookUrl}
+                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                    "Hola, quiero comprar Mi Primer Viaje por el Bosque del Corazón por USD $5."
+                  )}`}
                   className="btn primary"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Leer mini libro gratis
+                  Comprar por USD $5
                 </a>
-
-                <button
-                  type="button"
-                  className="btn secondary"
-                  onClick={handleFreeBookDownload}
-                  disabled={isDownloading}
-                >
-                  {isDownloading
-                    ? "Preparando descarga..."
-                    : "Descargar PDF"}
-                </button>
-              </div>
-
-              <p className="download-counter" aria-live="polite">
-                📥{" "}
-                {downloadCount === null
-                  ? "Consultando descargas..."
-                  : `${downloadCount} ${
-                      downloadCount === 1 ? "descarga" : "descargas"
-                    }`}
-              </p>
-
-              <div className="isis-recommendation">
-                <div className="isis-recommendation-content">
-                  <span className="isis-recommendation-icon">💜</span>
-
-                  <div>
-                    <strong>¿No sabes por dónde empezar?</strong>
-                    <p>
-                      Cuéntale a Isis qué estás viviendo y ella te ayudará a
-                      encontrar el recurso más adecuado para comenzar.
-                    </p>
-                  </div>
-                </div>
 
                 <button
                   type="button"
                   className="btn secondary"
                   onClick={openIsis}
                 >
-                  Hablar con Isis
+                  Preguntarle a Isis
                 </button>
               </div>
-            </div>
 
-            <div className="free-resource-visual">
-              <a
-                href={freeBookUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Abrir el mini libro gratuito del Bosque del Corazón"
-              >
+              <div className="bosque-solidarity">
+                <p>
+                  Si eres de Venezuela y deseas recibir este libro como apoyo
+                  solidario, escríbeme la palabra <strong>BOSQUE</strong>.
+                </p>
+
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                    "BOSQUE - Soy de Venezuela y quisiera recibir información sobre el apoyo solidario del libro Mi Primer Viaje por el Bosque del Corazón."
+                  )}`}
+                  className="btn secondary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Escribir BOSQUE
+                </a>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section id="recursos-gratuitos" className="resource-library-section">
+          <div className="section-heading">
+            <p className="eyebrow">Recursos gratuitos</p>
+            <h2>Materiales para comenzar hoy</h2>
+            <p>
+              Descarga sin costo recursos creados para acompañar el bienestar
+              emocional de niños, familias, jóvenes y adultos.
+            </p>
+          </div>
+
+          <div className="resource-library-grid free-resources-grid">
+            <article className="resource-library-card free-resource-item">
+              <div className="resource-cover-wrap">
                 <img
                   src={muestraGratisPersonajes}
-                  alt="Mini libro gratuito Conoce a mis amigos del Bosque del Corazón"
-                  className="free-resource-image"
+                  alt="Portada del mini libro Conoce a mis amigos del Bosque del Corazón"
+                  className="resource-cover"
                 />
-              </a>
-            </div>
+                <span className="resource-status free-status">Gratis</span>
+              </div>
+
+              <div className="resource-library-content">
+                <p className="resource-kicker">Para niños y familias</p>
+                <h3>Conoce a mis amigos del Bosque del Corazón</h3>
+
+                <p>
+                  Un primer encuentro con Isis, Lupi, Firu, Lumi, Milo, Alia,
+                  Lua y Zujo. Cada personaje ayuda a los niños a reconocer y
+                  expresar una emoción diferente con amor, creatividad y
+                  esperanza.
+                </p>
+
+                <ul className="resource-feature-list">
+                  <li>Presentación de los ocho personajes.</li>
+                  <li>Ilustraciones para colorear.</li>
+                  <li>Espacios para hablar sobre las emociones.</li>
+                  <li>Ideal para compartir en familia.</li>
+                </ul>
+
+                <div className="resource-card-actions">
+                  <a
+                    href={freeFriendsBookUrl}
+                    className="btn secondary"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Leer en línea
+                  </a>
+
+                  <button
+                    type="button"
+                    className="btn primary"
+                    disabled={isDownloading}
+                    onClick={() =>
+                      handleFreeResourceDownload(
+                        freeFriendsBookUrl,
+                        "ConoceMisAmigosBosquedelCorazon.pdf"
+                      )
+                    }
+                  >
+                    Descargar gratis
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article className="resource-library-card peace-resource-item">
+              <div className="resource-cover-wrap">
+                <img
+                  src={portadaColoresPaz}
+                  alt="Portada de Colores de Paz Interior"
+                  className="resource-cover"
+                />
+                <span className="resource-status free-status">Gratis</span>
+              </div>
+
+              <div className="resource-library-content">
+                <p className="resource-kicker">Para jóvenes y adultos</p>
+                <h3>Colores de Paz Interior</h3>
+
+                <p>
+                  Una colección gratuita de 10 mandalas para dedicarte unos
+                  minutos, respirar, soltar y volver a ti. Cada mandala incluye
+                  un ejercicio sencillo de calma y conexión interior.
+                </p>
+
+                <ul className="resource-feature-list">
+                  <li>10 mandalas únicos para colorear.</li>
+                  <li>Respiración, visualización y reflexión.</li>
+                  <li>Ejercicios de serenidad, esperanza y gratitud.</li>
+                  <li>No necesitas experiencia previa.</li>
+                </ul>
+
+                <div className="resource-card-actions">
+                  <a
+                    href={peaceColorsUrl}
+                    className="btn secondary"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Leer en línea
+                  </a>
+
+                  <button
+                    type="button"
+                    className="btn primary"
+                    disabled={isDownloading}
+                    onClick={() =>
+                      handleFreeResourceDownload(
+                        peaceColorsUrl,
+                        "Colores_de_Paz_Interior.pdf"
+                      )
+                    }
+                  >
+                    Descargar gratis
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div className="resource-library-footer">
+            <p className="download-counter" aria-live="polite">
+              📥{" "}
+              {downloadCount === null
+                ? "Consultando descargas..."
+                : `${downloadCount} ${
+                    downloadCount === 1
+                      ? "recurso descargado"
+                      : "recursos descargados"
+                  }`}
+            </p>
           </div>
         </section>
 
@@ -688,34 +824,27 @@ function HomePage() {
             Puedes conversar con Isis, nuestro asistente, o escribirnos por
             WhatsApp para conocer cuál recurso puede ser más adecuado para ti.
           </p>
-<div className="hero-buttons">
-  <a
-    href="#comunidad-bienestar"
-    className="btn primary"
-  >
-    Unirme a la comunidad
-  </a>
 
-  <button
-    type="button"
-    className="btn secondary"
-    onClick={openIsis}
-  >
-    Hablar con Isis
-  </button>
+          <div className="hero-buttons">
+            <button
+              type="button"
+              className="btn secondary"
+              onClick={openIsis}
+            >
+              Hablar con Isis
+            </button>
 
-  <a
-    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      "Hola, quisiera orientación para saber con cuál recurso comenzar."
-    )}`}
-    className="btn secondary"
-    target="_blank"
-    rel="noreferrer"
-  >
-    Escribir por WhatsApp
-  </a>
-</div>
-          
+            <a
+              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                "Hola, quisiera orientación para saber con cuál recurso comenzar."
+              )}`}
+              className="btn primary"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Escribir por WhatsApp
+            </a>
+          </div>
         </section>
       </main>
     </>

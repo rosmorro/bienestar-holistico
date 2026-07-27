@@ -1458,6 +1458,453 @@ img {
     padding-right: 18px;
   }
 }
+
+/* ========================================
+   BIBLIOTECA DE RECURSOS Y BOSQUE DEL CORAZÓN
+======================================== */
+
+.resource-library-section {
+  padding: 105px 24px;
+  background:
+    radial-gradient(circle at top left, rgba(217, 199, 232, 0.45) 0, transparent 26%),
+    radial-gradient(circle at bottom right, rgba(220, 233, 223, 0.65) 0, transparent 29%),
+    var(--color-bg);
+}
+
+.resource-library-grid {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+  align-items: stretch;
+}
+
+.resource-library-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--color-cream);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.resource-library-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 28px 70px rgba(91, 55, 43, 0.18);
+}
+
+.resource-cover-wrap {
+  position: relative;
+  padding: 22px 22px 0;
+}
+
+.resource-cover {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top center;
+
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(51, 38, 34, 0.17);
+}
+
+.resource-status {
+  position: absolute;
+  top: 36px;
+  right: 34px;
+
+  padding: 8px 13px;
+  border-radius: 999px;
+
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 20px rgba(51, 38, 34, 0.16);
+}
+
+.free-status {
+  background: var(--color-sage-dark);
+}
+
+.paid-status {
+  background: var(--color-rose);
+}
+
+.resource-library-content {
+  padding: 27px;
+
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.resource-kicker {
+  margin: 0 0 9px;
+
+  color: var(--color-rose);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.resource-library-content h3 {
+  margin: 0 0 14px;
+
+  color: var(--color-text);
+  font-family: var(--font-title);
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.resource-library-content > p:not(.resource-kicker) {
+  margin: 0 0 17px;
+
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.resource-feature-list {
+  margin: 0 0 23px;
+  padding: 0;
+
+  display: grid;
+  gap: 9px;
+
+  list-style: none;
+}
+
+.resource-feature-list li {
+  position: relative;
+  padding-left: 23px;
+
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.resource-feature-list li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  content: "♡";
+  color: var(--color-rose);
+  font-weight: 800;
+}
+
+.resource-special-note {
+  margin: 0 0 23px;
+  padding: 15px;
+
+  background: rgba(244, 228, 216, 0.74);
+  border-radius: 14px;
+
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.resource-special-note strong {
+  color: var(--color-rose-dark);
+}
+
+.resource-card-actions {
+  margin-top: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.resource-card-actions .btn {
+  width: 100%;
+  cursor: pointer;
+}
+
+.resource-card-actions button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.resource-library-footer {
+  width: min(900px, calc(100% - 30px));
+  margin: 42px auto 0;
+  padding: 26px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--color-cream);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.resource-library-footer p {
+  max-width: 720px;
+  margin: 0;
+
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.resource-library-footer .download-counter {
+  margin: 0 !important;
+}
+
+@media (max-width: 1050px) {
+  .resource-library-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .premium-resource-item {
+    grid-column: 1 / -1;
+    width: min(570px, 100%);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .resource-library-section {
+    padding: 74px 16px;
+  }
+
+  .resource-library-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .premium-resource-item {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .resource-library-content {
+    padding: 23px 20px;
+  }
+
+  .resource-library-content h3 {
+    font-size: 25px;
+  }
+
+  .resource-library-footer {
+    width: 100%;
+    padding: 22px 18px;
+  }
+}
+
+/* ========================================
+   AJUSTE FINAL - SECCIÓN BOSQUE DEL CORAZÓN
+======================================== */
+
+.bosque-book-section {
+  padding: 105px 24px;
+  background:
+    radial-gradient(circle at top left, rgba(241, 209, 196, 0.42) 0, transparent 27%),
+    radial-gradient(circle at bottom right, rgba(220, 233, 223, 0.56) 0, transparent 30%),
+    var(--color-surface);
+}
+
+.bosque-book-card {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 34px;
+
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: 44px;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--color-cream);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.bosque-book-cover-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.bosque-book-cover {
+  display: block;
+  width: min(100%, 340px);
+  height: auto;
+  object-fit: contain;
+
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(51, 38, 34, 0.17);
+}
+
+.bosque-book-cover-wrap .resource-status {
+  top: 16px;
+  right: 16px;
+}
+
+.bosque-book-content {
+  min-width: 0;
+}
+
+.bosque-book-content h3 {
+  max-width: 650px;
+  margin: 0 0 16px;
+
+  color: var(--color-text);
+  font-family: var(--font-title);
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.08;
+}
+
+.bosque-book-content > p:not(.resource-kicker) {
+  max-width: 720px;
+  margin: 0 0 18px;
+
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.bosque-book-content .resource-feature-list {
+  margin-bottom: 20px;
+}
+
+.bosque-book-content .resource-special-note {
+  margin-bottom: 22px;
+}
+
+.bosque-book-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.bosque-book-actions .btn {
+  width: auto;
+  min-width: 210px;
+  padding: 14px 22px;
+}
+
+.bosque-solidarity {
+  margin-top: 22px;
+  padding: 18px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+
+  background: rgba(220, 233, 223, 0.55);
+  border: 1px solid rgba(143, 174, 157, 0.35);
+  border-radius: 16px;
+}
+
+.bosque-solidarity p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.bosque-solidarity .btn {
+  flex: 0 0 auto;
+  padding: 12px 18px;
+}
+
+.free-resources-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 900px;
+}
+
+/* Asegura que los botones de contacto queden centrados */
 .contact-section .hero-buttons {
   justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .bosque-book-card {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 28px;
+  }
+
+  .bosque-book-cover {
+    width: min(100%, 360px);
+  }
+
+  .bosque-book-content {
+    text-align: center;
+  }
+
+  .bosque-book-content h3,
+  .bosque-book-content > p:not(.resource-kicker) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .bosque-book-content .resource-feature-list {
+    width: min(620px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .bosque-book-actions {
+    justify-content: center;
+  }
+
+  .bosque-solidarity {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .free-resources-grid {
+    grid-template-columns: 1fr;
+    max-width: 640px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bosque-book-section {
+    padding: 72px 16px;
+  }
+
+  .bosque-book-card {
+    padding: 22px 18px;
+    border-radius: 24px;
+  }
+
+  .bosque-book-content h3 {
+    font-size: clamp(31px, 9vw, 42px);
+  }
+
+  .bosque-book-actions {
+    flex-direction: column;
+  }
+
+  .bosque-book-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .bosque-solidarity .btn {
+    width: 100%;
+  }
 }
