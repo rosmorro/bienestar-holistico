@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import VisitCounter from "../components/VisitCounter";
 
 import portadaLibro1 from "../assets/Images/portadalibro1.png";
 import portadaLibro2 from "../assets/Images/portadalibro2.png";
@@ -8,9 +9,7 @@ import heroBienestar from "../assets/Images/hero-bienestar.png";
 import muestraGratisPersonajes from "../assets/Images/muestragratispersonajes.png";
 
 const whatsappNumber = "50689327806";
-
-const freeBookUrl =
-  "/muestras/ConoceMisAmigosBosquedelCorazon.pdf";
+const freeBookUrl = "/muestras/ConoceMisAmigosBosquedelCorazon.pdf";
 
 const books = [
   {
@@ -76,10 +75,44 @@ const offerings = [
 ];
 
 function HomePage() {
+  const [pageVisitCount, setPageVisitCount] = useState(null);
   const [downloadCount, setDownloadCount] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [newsletterStatus, setNewsletterStatus] = useState("");
+  const [isNewsletterSubmitting, setIsNewsletterSubmitting] =
+    useState(false);
 
   useEffect(() => {
+    const registerPageVisit = async () => {
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        const lastCountedDate = localStorage.getItem(
+          "bienestar-home-last-counted-date"
+        );
+
+        const response = await fetch("/api/page-view-count", {
+          method: lastCountedDate === today ? "GET" : "POST",
+        });
+
+        if (!response.ok) {
+          throw new Error("No se pudo consultar el contador de visitas.");
+        }
+
+        const data = await response.json();
+        setPageVisitCount(typeof data.count === "number" ? data.count : 0);
+
+        if (lastCountedDate !== today) {
+          localStorage.setItem(
+            "bienestar-home-last-counted-date",
+            today
+          );
+        }
+      } catch (error) {
+        console.error("Error al registrar la visita:", error);
+        setPageVisitCount(null);
+      }
+    };
+
     const loadDownloadCount = async () => {
       try {
         const response = await fetch("/api/download-count");
@@ -89,20 +122,14 @@ function HomePage() {
         }
 
         const data = await response.json();
-
-        setDownloadCount(
-          typeof data.count === "number" ? data.count : 0
-        );
+        setDownloadCount(typeof data.count === "number" ? data.count : 0);
       } catch (error) {
-        console.error(
-          "Error al consultar las descargas:",
-          error
-        );
-
+        console.error("Error al consultar las descargas:", error);
         setDownloadCount(null);
       }
     };
 
+    registerPageVisit();
     loadDownloadCount();
   }, []);
 
@@ -130,29 +157,21 @@ function HomePage() {
       });
 
       if (!response.ok) {
-        throw new Error(
-          "No se pudo actualizar el contador."
-        );
+        throw new Error("No se pudo actualizar el contador.");
       }
 
       const data = await response.json();
 
       setDownloadCount(
-        typeof data.count === "number"
-          ? data.count
-          : downloadCount
+        typeof data.count === "number" ? data.count : downloadCount
       );
     } catch (error) {
-      console.error(
-        "Error al registrar la descarga:",
-        error
-      );
+      console.error("Error al registrar la descarga:", error);
     } finally {
       const link = document.createElement("a");
 
       link.href = freeBookUrl;
-      link.download =
-        "ConoceMisAmigosBosquedelCorazon.pdf";
+      link.download = "ConoceMisAmigosBosquedelCorazon.pdf";
 
       document.body.appendChild(link);
       link.click();
@@ -162,50 +181,80 @@ function HomePage() {
     }
   };
 
+  const handleNewsletterSubmit = async (event) => {
+    event.preventDefault();
+
+    if (isNewsletterSubmitting) {
+      return;
+    }
+
+    setIsNewsletterSubmitting(true);
+    setNewsletterStatus("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams(formData).toString(),
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo registrar el correo.");
+      }
+
+      form.reset();
+
+      setNewsletterStatus(
+        "¡Gracias! Ya formas parte de la Comunidad Bienestar Holístico. Te avisaremos cuando publiquemos un nuevo recurso."
+      );
+    } catch (error) {
+      console.error("Error al registrar el correo:", error);
+
+      setNewsletterStatus(
+        "No pudimos registrar tu correo en este momento. Inténtalo nuevamente."
+      );
+    } finally {
+      setIsNewsletterSubmitting(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
 
       <main>
-        {/* HERO */}
-
         <section id="inicio" className="home-hero">
           <div className="home-hero-content">
-            <p className="eyebrow">
-              Bienestar Holístico · Rosa Mora
-            </p>
+            <p className="eyebrow">Bienestar Holístico · Rosa Mora</p>
 
             <h1>
-              La transformación comienza cuando decides
-              mirarte con amor.
+              La transformación comienza cuando decides mirarte con amor.
             </h1>
 
             <p className="home-hero-intro">
-              Creo en el poder de comprender nuestra historia,
-              soltar aquello que ya no necesitamos y construir
-              una vida con mayor paz, conciencia y propósito.
+              Creo en el poder de comprender nuestra historia, soltar aquello
+              que ya no necesitamos y construir una vida con mayor paz,
+              conciencia y propósito.
             </p>
 
             <p className="home-hero-about">
-              Soy <strong>Rosa Mora</strong>, autora y creadora
-              de Bienestar Holístico. Aquí encontrarás libros,
-              ejercicios, recursos emocionales y experiencias
-              diseñadas para acompañarte en tu camino de
-              transformación personal y familiar.
+              Soy <strong>Rosa Mora</strong>, autora y creadora de Bienestar
+              Holístico. Aquí encontrarás libros, ejercicios, recursos
+              emocionales y experiencias diseñadas para acompañarte en tu
+              camino de transformación personal y familiar.
             </p>
 
             <div className="hero-buttons">
-              <a
-                href="#ofrecemos"
-                className="btn primary"
-              >
+              <a href="#ofrecemos" className="btn primary">
                 Explorar el espacio
               </a>
 
-              <a
-                href="#libros"
-                className="btn secondary"
-              >
+              <a href="#libros" className="btn secondary">
                 Conocer los libros
               </a>
             </div>
@@ -215,6 +264,8 @@ function HomePage() {
               <span>🌿 Bienestar emocional</span>
               <span>✨ Sanación sistémica</span>
             </div>
+
+            <VisitCounter count={pageVisitCount} />
           </div>
 
           <div className="home-hero-visual">
@@ -230,47 +281,26 @@ function HomePage() {
           </div>
         </section>
 
-        {/* LO QUE OFRECEMOS */}
-
-        <section
-          id="ofrecemos"
-          className="offerings-section"
-        >
+        <section id="ofrecemos" className="offerings-section">
           <div className="section-heading">
-            <p className="eyebrow">
-              Un espacio creado para acompañarte
-            </p>
-
-            <h2>
-              Lo que encontrarás en Bienestar Holístico
-            </h2>
-
+            <p className="eyebrow">Un espacio creado para acompañarte</p>
+            <h2>Lo que encontrarás en Bienestar Holístico</h2>
             <p>
-              Diferentes caminos y herramientas para cuidar
-              tus emociones, comprender tu historia y avanzar
-              a tu propio ritmo.
+              Diferentes caminos y herramientas para cuidar tus emociones,
+              comprender tu historia y avanzar a tu propio ritmo.
             </p>
           </div>
 
           <div className="offerings-grid">
             {offerings.map((offering) => (
-              <article
-                className="offering-card"
-                key={offering.title}
-              >
-                <span className="offering-icon">
-                  {offering.icon}
-                </span>
-
+              <article className="offering-card" key={offering.title}>
+                <span className="offering-icon">{offering.icon}</span>
                 <h3>{offering.title}</h3>
-
                 <p>{offering.text}</p>
               </article>
             ))}
           </div>
         </section>
-
-        {/* PROPÓSITO */}
 
         <section className="purpose-section">
           <div className="purpose-visual">
@@ -279,17 +309,13 @@ function HomePage() {
 
           <div className="purpose-content">
             <p className="eyebrow">Mi propósito</p>
-
             <h2>
-              Acompañarte a recordar tu valor y elegir una
-              vida más consciente.
+              Acompañarte a recordar tu valor y elegir una vida más consciente.
             </h2>
-
             <p>
-              No se trata de convertirte en alguien diferente.
-              Se trata de comprenderte, escucharte y comenzar
-              a soltar las cargas que te impiden vivir con
-              mayor libertad.
+              No se trata de convertirte en alguien diferente. Se trata de
+              comprenderte, escucharte y comenzar a soltar las cargas que te
+              impiden vivir con mayor libertad.
             </p>
 
             <div className="purpose-values">
@@ -301,29 +327,19 @@ function HomePage() {
           </div>
         </section>
 
-        {/* LIBROS */}
-
         <section id="libros" className="books-section">
           <div className="section-heading">
-            <p className="eyebrow">
-              Colección disponible
-            </p>
-
+            <p className="eyebrow">Colección disponible</p>
             <h2>365 Días de Sanación Sistémica</h2>
-
             <p>
-              Tres libros para comprender tus raíces,
-              aprender a sostenerte y comenzar a soltar
-              aquello que ya no necesitas cargar.
+              Tres libros para comprender tus raíces, aprender a sostenerte y
+              comenzar a soltar aquello que ya no necesitas cargar.
             </p>
           </div>
 
           <div className="books-grid">
             {books.map((book) => (
-              <article
-                className="book-card"
-                key={book.id}
-              >
+              <article className="book-card" key={book.id}>
                 <div className="book-cover-wrapper">
                   <img
                     src={book.image}
@@ -333,19 +349,10 @@ function HomePage() {
                 </div>
 
                 <div className="book-content">
-                  <p className="book-number">
-                    Libro {book.id}
-                  </p>
-
+                  <p className="book-number">Libro {book.id}</p>
                   <h3>{book.title}</h3>
-
-                  <p className="book-subtitle">
-                    {book.subtitle}
-                  </p>
-
-                  <p className="book-description">
-                    {book.description}
-                  </p>
+                  <p className="book-subtitle">{book.subtitle}</p>
+                  <p className="book-description">{book.description}</p>
 
                   <div className="book-price">
                     <span>Libro digital</span>
@@ -379,34 +386,19 @@ function HomePage() {
           </div>
         </section>
 
-        {/* MUESTRAS GRATUITAS */}
-
-        <section
-          id="muestras-gratis"
-          className="samples-section"
-        >
+        <section id="muestras-gratis" className="samples-section">
           <div className="section-heading">
-            <p className="eyebrow">
-              Comienza sin costo
-            </p>
-
-            <h2>
-              Lee los primeros 3 días de cada libro
-            </h2>
-
+            <p className="eyebrow">Comienza sin costo</p>
+            <h2>Lee los primeros 3 días de cada libro</h2>
             <p>
-              Explora gratuitamente el enfoque y la dinámica
-              de cada libro antes de decidir cuál puede
-              acompañarte mejor.
+              Explora gratuitamente el enfoque y la dinámica de cada libro
+              antes de decidir cuál puede acompañarte mejor.
             </p>
           </div>
 
           <div className="samples-grid">
             {books.map((book) => (
-              <article
-                className="sample-card"
-                key={`sample-${book.id}`}
-              >
+              <article className="sample-card" key={`sample-${book.id}`}>
                 <img
                   src={book.image}
                   alt={`Muestra gratuita de ${book.title}`}
@@ -414,12 +406,8 @@ function HomePage() {
                 />
 
                 <div className="sample-content">
-                  <span className="free-badge">
-                    3 días gratis
-                  </span>
-
+                  <span className="free-badge">3 días gratis</span>
                   <h3>{book.title}</h3>
-
                   <p>{book.subtitle}</p>
 
                   <a
@@ -436,8 +424,6 @@ function HomePage() {
           </div>
         </section>
 
-        {/* MINI LIBRO GRATUITO */}
-
         <section
           id="bosque-del-corazon-gratis"
           className="free-resource-section"
@@ -452,21 +438,17 @@ function HomePage() {
                 Mini libro gratuito
               </span>
 
-              <h2>
-                Conoce a mis amigos del Bosque del Corazón
-              </h2>
+              <h2>Conoce a mis amigos del Bosque del Corazón</h2>
 
               <p>
-                Descubre a los personajes del Bosque del
-                Corazón y conoce cómo cada uno acompaña a
-                los niños a comprender y expresar sus
+                Descubre a los personajes del Bosque del Corazón y conoce cómo
+                cada uno acompaña a los niños a comprender y expresar sus
                 emociones.
               </p>
 
               <p>
-                Un recurso creado con amor para compartir
-                en familia y comenzar a conversar sobre el
-                mundo emocional de una forma cercana,
+                Un recurso creado con amor para compartir en familia y comenzar
+                a conversar sobre el mundo emocional de una forma cercana,
                 creativa y sencilla.
               </p>
 
@@ -492,37 +474,24 @@ function HomePage() {
                 </button>
               </div>
 
-              <p
-                className="download-counter"
-                aria-live="polite"
-              >
+              <p className="download-counter" aria-live="polite">
                 📥{" "}
                 {downloadCount === null
                   ? "Consultando descargas..."
                   : `${downloadCount} ${
-                      downloadCount === 1
-                        ? "descarga"
-                        : "descargas"
+                      downloadCount === 1 ? "descarga" : "descargas"
                     }`}
               </p>
 
-              {/* TARJETA PARA ABRIR A ISIS */}
-
               <div className="isis-recommendation">
                 <div className="isis-recommendation-content">
-                  <span className="isis-recommendation-icon">
-                    💜
-                  </span>
+                  <span className="isis-recommendation-icon">💜</span>
 
                   <div>
-                    <strong>
-                      ¿No sabes por dónde empezar?
-                    </strong>
-
+                    <strong>¿No sabes por dónde empezar?</strong>
                     <p>
-                      Cuéntale a Isis qué estás viviendo y
-                      ella te ayudará a encontrar el recurso
-                      más adecuado para comenzar.
+                      Cuéntale a Isis qué estás viviendo y ella te ayudará a
+                      encontrar el recurso más adecuado para comenzar.
                     </p>
                   </div>
                 </div>
@@ -554,22 +523,169 @@ function HomePage() {
           </div>
         </section>
 
-        {/* CONTACTO */}
+        <section id="comunidad-bienestar" className="community-section">
+          <div className="community-card">
+            <div className="community-content">
+              <p className="eyebrow">Comunidad Bienestar Holístico</p>
+              <h2>🌿 Sigue caminando con nosotros</h2>
 
-        <section
-          id="contacto"
-          className="contact-section"
-        >
-          <p className="eyebrow">
-            Estamos para acompañarte
-          </p>
+              <p className="community-intro">
+                Este mini libro es solo el comienzo. Únete a nuestra comunidad
+                y recibe nuevos recursos creados para acompañar tu bienestar
+                emocional y el de tu familia.
+              </p>
 
+              <div className="community-benefits">
+                <span>🌱 Mini libros gratuitos</span>
+                <span>🎨 Actividades para niños</span>
+                <span>📖 Ejercicios sistémicos</span>
+                <span>💜 Reflexiones para familias</span>
+                <span>✨ Noticias de próximos libros</span>
+              </div>
+            </div>
+
+            <div className="community-form-wrapper">
+              <form
+                name="comunidad-bienestar"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                className="community-form"
+                onSubmit={handleNewsletterSubmit}
+              >
+                <input
+                  type="hidden"
+                  name="form-name"
+                  value="comunidad-bienestar"
+                />
+
+                <p className="newsletter-honeypot">
+                  <label>
+                    No completes este campo:
+                    <input
+                      name="bot-field"
+                      type="text"
+                      tabIndex="-1"
+                      autoComplete="off"
+                    />
+                  </label>
+                </p>
+
+                <div className="community-field">
+                  <label htmlFor="community-name">Nombre</label>
+                  <input
+                    id="community-name"
+                    name="nombre"
+                    type="text"
+                    placeholder="Tu nombre"
+                    autoComplete="name"
+                    required
+                  />
+                </div>
+
+                <div className="community-field">
+                  <label htmlFor="community-email">Correo electrónico</label>
+                  <input
+                    id="community-email"
+                    name="email"
+                    type="email"
+                    placeholder="nombre@correo.com"
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+
+                <div className="community-field">
+                  <label htmlFor="community-interest">
+                    ¿Qué contenido te interesa más?
+                  </label>
+
+                  <select
+                    id="community-interest"
+                    name="interes"
+                    defaultValue=""
+                    required
+                  >
+                    <option value="" disabled>
+                      Selecciona una opción
+                    </option>
+                    <option value="Bienestar y crecimiento personal">
+                      Bienestar y crecimiento personal
+                    </option>
+                    <option value="Actividades para niños">
+                      Actividades para niños
+                    </option>
+                    <option value="Familia y crianza">
+                      Familia y crianza
+                    </option>
+                    <option value="Constelaciones familiares">
+                      Constelaciones familiares
+                    </option>
+                    <option value="Todos los recursos">
+                      Todos los recursos
+                    </option>
+                  </select>
+                </div>
+
+                <label className="community-consent">
+                  <input
+                    type="checkbox"
+                    name="consentimiento"
+                    value="Sí"
+                    required
+                  />
+                  <span>
+                    Sí, quiero recibir recursos gratuitos y noticias de
+                    Bienestar Holístico.
+                  </span>
+                </label>
+
+                <button
+                  type="submit"
+                  className="btn primary community-submit"
+                  disabled={isNewsletterSubmitting}
+                >
+                  {isNewsletterSubmitting
+                    ? "Registrando..."
+                    : "Quiero formar parte de la comunidad"}
+                </button>
+
+                <p className="community-privacy">
+                  Solo te escribiremos cuando tengamos algo valioso para
+                  compartir. Sin spam.
+                </p>
+
+                {newsletterStatus && (
+                  <div
+                    className="community-success"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <p>{newsletterStatus}</p>
+
+                    {newsletterStatus.startsWith("¡Gracias!") && (
+                      <button
+                        type="button"
+                        className="btn secondary"
+                        onClick={openIsis}
+                      >
+                        Hablar con Isis
+                      </button>
+                    )}
+                  </div>
+                )}
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section id="contacto" className="contact-section">
+          <p className="eyebrow">Estamos para acompañarte</p>
           <h2>¿No sabes por dónde comenzar?</h2>
 
           <p>
-            Puedes conversar con Isis, nuestro asistente,
-            o escribirnos por WhatsApp para conocer cuál
-            recurso puede ser más adecuado para ti.
+            Puedes conversar con Isis, nuestro asistente, o escribirnos por
+            WhatsApp para conocer cuál recurso puede ser más adecuado para ti.
           </p>
 
           <div className="hero-buttons">
