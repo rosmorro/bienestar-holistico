@@ -1932,3 +1932,184 @@ img {
   line-height: 1.4;
   text-align: center;
 }
+/* ETAPA 1 - ACCESOS GRATUITOS EN PORTADA */
+
+.home-hero .hero-free-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.home-hero .hero-free-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e8d6ca;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(91, 55, 43, 0.09);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-hero .hero-free-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 35px rgba(91, 55, 43, 0.15);
+}
+
+.home-hero .hero-free-card strong {
+  color: #8f4d42;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.home-hero .hero-free-card span,
+.home-hero .hero-free-card p {
+  color: #7a625a;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.home-hero .hero-free-card:focus-visible {
+  outline: 3px solid #667f70;
+  outline-offset: 3px;
+}
+
+/* Reducir espacio excesivo en la portada */
+.home-hero {
+  min-height: auto;
+  padding-top: 130px;
+  padding-bottom: 65px;
+  gap: 40px;
+}
+
+.home-hero-visual img {
+  height: 510px;
+}
+
+/* Adaptación a celulares */
+@media (max-width: 760px) {
+  .home-hero {
+    padding: 100px 18px 45px;
+    gap: 22px;
+  }
+
+  .home-hero .hero-free-options {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .home-hero .hero-free-card {
+    padding: 16px;
+  }
+
+  .home-hero-content h1 {
+    font-size: clamp(34px, 9vw, 45px);
+  }
+
+  .home-hero-visual img {
+    height: 300px;
+  }
+}
+/* ========================================
+   ETAPA 1 - PORTADA RECURSOS GRATUITOS
+======================================== */
+
+.home-hero-free-first {
+  min-height: auto;
+  padding-top: 130px;
+  padding-bottom: 65px;
+  gap: 40px;
+}
+
+.free-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 25px;
+}
+
+.free-entry-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e8d6ca;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(91, 55, 43, 0.10);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.free-entry-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 45px rgba(91, 55, 43, 0.16);
+}
+
+.free-entry-card:focus-visible {
+  outline: 3px solid #667f70;
+  outline-offset: 3px;
+}
+
+.free-entry-icon {
+  font-size: 28px;
+}
+
+.free-entry-card strong {
+  color: #8f4d42;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.free-entry-card > span:not(.free-entry-icon) {
+  color: #7a625a;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.free-entry-card .free-entry-link {
+  margin-top: auto;
+  color: #667f70 !important;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* TABLET */
+
+@media (max-width: 1050px) {
+  .home-hero-free-first {
+    padding-top: 125px;
+  }
+}
+
+/* CELULAR */
+
+@media (max-width: 760px) {
+  .home-hero-free-first {
+    padding: 100px 18px 45px;
+    gap: 25px;
+  }
+
+  .free-entry-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .free-entry-card {
+    padding: 17px;
+  }
+
+  .home-hero-free-first .home-hero-content h1 {
+    font-size: clamp(34px, 9vw, 44px);
+  }
+
+  .home-hero-free-first .home-hero-visual img {
+    height: 300px;
+  }
+}

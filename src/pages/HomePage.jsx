@@ -268,64 +268,47 @@ function HomePage() {
       <Navbar />
 
       <main>
-        <section id="inicio" className="home-hero">
+        <section id="inicio" className="home-hero home-hero-free-first">
           <div className="home-hero-content">
             <p className="eyebrow">Bienestar Holístico · Rosa Mora</p>
-
-            <h1>
-              La transformación comienza cuando decides mirarte con amor.
-            </h1>
-
+            <h1>Tu camino hacia el bienestar comienza aquí.</h1>
             <p className="home-hero-intro">
-              Creo en el poder de comprender nuestra historia, soltar aquello
-              que ya no necesitamos y construir una vida con mayor paz,
-              conciencia y propósito.
+              Descubre herramientas gratuitas para conectar contigo, cuidar tus
+              emociones y acompañar a tu familia.
             </p>
-
-            <p className="home-hero-about">
-              Soy <strong>Rosa Mora</strong>, autora y creadora de Bienestar
-              Holístico. Aquí encontrarás libros, ejercicios, recursos
-              emocionales y experiencias diseñadas para acompañarte en tu
-              camino de transformación personal y familiar.
-            </p>
-
+            <div className="free-entry-grid" aria-label="Comienza con contenido gratuito">
+              <a className="free-entry-card" href="#muestras-gratis">
+                <span className="free-entry-icon" aria-hidden="true">📖</span>
+                <strong>3 días gratis de cada libro</strong>
+                <span>Explora la serie 365 Días para Sanar</span>
+                <span className="free-entry-link">Ver muestras gratuitas →</span>
+              </a>
+              <a className="free-entry-card" href="#recursos-gratuitos">
+                <span className="free-entry-icon" aria-hidden="true">🎁</span>
+                <strong>Recursos gratuitos</strong>
+                <span>Actividades para niños, familias y adultos</span>
+                <span className="free-entry-link">Explorar recursos →</span>
+              </a>
+            </div>
             <div className="hero-buttons">
-              <a href="#ofrecemos" className="btn primary">
-                Explorar el espacio
-              </a>
-
-              <a href="#libros" className="btn secondary">
-                Conocer los libros
-              </a>
+              <a href="#libros" className="btn secondary">Conocer los libros completos</a>
             </div>
-
-            <div className="hero-highlights">
-              <span>♡ Crecimiento personal</span>
-              <span>🌿 Bienestar emocional</span>
-              <span>✨ Sanación sistémica</span>
-            </div>
-
             <p className="page-visit-counter" aria-live="polite">
               👁️{" "}
               {pageVisitCount === null
                 ? "Contando visitas..."
                 : `${pageVisitCount.toLocaleString("es-CR")} ${
-                    pageVisitCount === 1
-                      ? "visita registrada"
-                      : "visitas registradas"
+                    pageVisitCount === 1 ? "visita registrada" : "visitas registradas"
                   }`}
             </p>
           </div>
-
           <div className="home-hero-visual">
             <img
               src={heroBienestar}
               alt="Mujer disfrutando un momento de calma, lectura y conexión personal"
             />
-
             <div className="hero-quote">
-              <span>“</span>
-              Sanando desde las raíces, elevando las alas.
+              <span>“</span>Sanando desde las raíces, elevando las alas.
             </div>
           </div>
         </section>
