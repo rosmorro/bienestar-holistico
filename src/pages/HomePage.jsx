@@ -47,6 +47,29 @@ const books = [
   },
 ];
 
+const independentGuides = [
+  {
+    id: "abrazar-duelo",
+    title: "7 Días para Abrazar Mi Duelo",
+    subtitle: "Una guía para acompañar tus emociones, un día a la vez.",
+    description:
+      "Siete días de reflexión y actividades para reconocer lo que sientes, dar espacio a tus recuerdos y acompañarte con respeto durante el duelo.",
+    image: "/portadas/7_Dias_Abrazar_Mi_Duelo_Portada.jpg",
+    pages: "15 páginas",
+    price: 5,
+  },
+  {
+    id: "volver-centro",
+    title: "7 Días para Volver a Mi Centro",
+    subtitle: "Amar con límites, soltar cargas y cultivar una vida propia.",
+    description:
+      "Siete prácticas sistémicas y creativas para reconocer tus límites, distinguir las responsabilidades propias de las ajenas y volver a conectar con tu vida.",
+    image: "/portadas/7_Dias_Volver_Mi_Centro_Portada.jpg",
+    pages: "26 páginas",
+    price: 5,
+  },
+];
+
 const offerings = [
   {
     icon: "📖",
@@ -388,13 +411,13 @@ function HomePage() {
 
                   <div className="book-price">
                     <span>Libro digital</span>
-                    <strong>USD $5</strong>
+                    <strong>USD $9</strong>
                   </div>
 
                   <div className="book-actions">
                     <a
                       href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                        `Hola, me interesa comprar el Libro ${book.id}: ${book.title}.`
+                        `Hola, quiero comprar el Libro ${book.id}: ${book.title}, de la serie 365 Días para Sanar, por USD $9.`
                       )}`}
                       className="btn primary"
                       target="_blank"
@@ -410,6 +433,55 @@ function HomePage() {
                       rel="noreferrer"
                     >
                       Leer 3 días gratis
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="guias-bienestar" className="books-section independent-guides-section">
+          <div className="section-heading">
+            <p className="eyebrow">Guías digitales para acompañarte</p>
+            <h2>7 días para conectar contigo</h2>
+            <p>
+              Dos recorridos prácticos de reflexión y actividades creativas
+              para acompañar tus emociones a tu propio ritmo.
+            </p>
+          </div>
+
+          <div className="books-grid independent-guides-grid">
+            {independentGuides.map((guide) => (
+              <article className="book-card" key={guide.id}>
+                <div className="book-cover-wrapper">
+                  <img
+                    src={guide.image}
+                    alt={`Portada original de ${guide.title}`}
+                    className="book-cover"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div className="book-content">
+                  <p className="book-number">Guía digital · {guide.pages}</p>
+                  <h3>{guide.title}</h3>
+                  <p className="book-subtitle">{guide.subtitle}</p>
+                  <p className="book-description">{guide.description}</p>
+                  <div className="book-price">
+                    <span>Guía digital completa</span>
+                    <strong>USD ${guide.price}</strong>
+                  </div>
+                  <div className="book-actions">
+                    <a
+                      href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                        `Hola, quiero comprar la guía digital ${guide.title} por USD $${guide.price}.`
+                      )}`}
+                      className="btn primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Comprar por WhatsApp
                     </a>
                   </div>
                 </div>

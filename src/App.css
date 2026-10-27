@@ -2113,3 +2113,31 @@ img {
     height: 300px;
   }
 }
+/* Etapa 2: guías independientes. Agregar al final de src/App.css */
+.independent-guides-section {
+  background: #faf7f2;
+}
+
+.independent-guides-grid {
+  max-width: 900px;
+  margin-inline: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.independent-guides-grid .book-cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1530 / 1980;
+  object-fit: contain;
+}
+
+.independent-guides-grid .book-actions {
+  margin-top: auto;
+}
+
+@media (max-width: 760px) {
+  .independent-guides-grid {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+  }
+}
